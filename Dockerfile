@@ -1,5 +1,5 @@
-FROM 		progrium/busybox
-MAINTAINER 	Jeff Lindsay <progrium@gmail.com>
+FROM 		dockerfile/java
+MAINTAINER 	shayashibara
 
 ADD https://dl.bintray.com/mitchellh/consul/0.4.1_linux_amd64.zip /tmp/consul.zip
 RUN cd /bin && unzip /tmp/consul.zip && chmod +x /bin/consul && rm /tmp/consul.zip
@@ -9,8 +9,6 @@ RUN mkdir /ui && cd /ui && unzip /tmp/webui.zip && rm /tmp/webui.zip
 
 ADD https://get.docker.io/builds/Linux/x86_64/docker-1.2.0 /bin/docker
 RUN chmod +x /bin/docker
-
-RUN opkg-install curl bash
 
 ADD ./config /config/
 ONBUILD ADD ./config /config/
