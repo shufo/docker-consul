@@ -1,4 +1,4 @@
-FROM 		dockerfile/java
+FROM 		progrium/busybox
 MAINTAINER 	shayashibara
 
 ADD https://dl.bintray.com/mitchellh/consul/0.5.2_linux_amd64.zip /tmp/consul.zip
@@ -10,7 +10,13 @@ RUN mkdir /ui && cd /ui && unzip /tmp/webui.zip && rm /tmp/webui.zip && mv dist/
 ADD https://get.docker.io/builds/Linux/x86_64/docker-1.6.1 /bin/docker
 RUN chmod +x /bin/docker
 
+RUN opkg-install curl bash ca-certificates
+
+RUN cat /etc/ssl/certs/*.crt > /etc/ssl/certs/ca-certificates.crt && \
+    sed -i -r '/^#.+/d' /etc/ssl/certs/ca-certificates.crt
+
 ADD ./config /config/
+ONBUILD ADD ./config /config/
 
 ADD ./start /bin/start
 ADD ./check-http /bin/check-http
