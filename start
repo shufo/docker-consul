@@ -2,6 +2,7 @@
 
 readonly IMAGE="progrium/consul"
 readonly EXPECT="${EXPECT:-3}"
+readonly CONSUL_SERVER_ADDRESS="${CONSUL_SERVER_ADDRESS:-127.0.0.1}"
 
 cmd-run() {
 	local ip_def="$1"; shift
@@ -38,10 +39,15 @@ eval docker run --name consul -h \$HOSTNAME \
 EOF
 }
 
+agent() {
+    exec /bin/consul agent -config-dir=/config $@ -retry-join $CONSUL_SERVER_ADDRESS;;
+}
+
 main() {
 	set -eo pipefail
 	case "$1" in
 	cmd:run)            shift; cmd-run $@;;
+    agent)              shift; agent $@;;
 	*)                  exec /bin/consul agent -config-dir=/config $@;;
 	esac
 }
