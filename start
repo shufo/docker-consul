@@ -40,7 +40,7 @@ EOF
 }
 
 agent() {
-    exec /bin/consul agent -config-dir=/config $@ -retry-join $CONSUL_SERVER_ADDRESS;;
+    exec /bin/consul agent -config-dir=/config $@ -retry-join $CONSUL_SERVER_ADDRESS
 }
 
 main() {
